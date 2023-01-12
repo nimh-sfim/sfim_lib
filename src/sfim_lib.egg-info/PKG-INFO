@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: sfim-lib
+Version: 0.0.2
+Summary: SFIM Python Library
+Author-email: Javier Gonzalez-Castillo <javiergc@mail.nih.gov>, Daniel Handwerker <handwerkerd@mail.nih.gov>
+Project-URL: Homepage, https://github.com/nimh-sfim/sfim_lib
+Project-URL: Bug Tracker, https://github.com/nimh-sfim/sfim_lib/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Functionality to be shared across SFIM users and to be made publicly available.

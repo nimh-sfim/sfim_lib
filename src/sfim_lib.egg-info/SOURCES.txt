@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+src/sfim_lib/__init__.py
+src/sfim_lib/example.py
+src/sfim_lib.egg-info/PKG-INFO
+src/sfim_lib.egg-info/SOURCES.txt
+src/sfim_lib.egg-info/dependency_links.txt
+src/sfim_lib.egg-info/top_level.txt
+src/sfim_lib/io/__init__.py
+src/sfim_lib/io/afni.py
+src/sfim_lib/manifold/__init__.py
+src/sfim_lib/swc/__init__.py
