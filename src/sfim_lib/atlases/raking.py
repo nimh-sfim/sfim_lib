@@ -9,11 +9,13 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
     # Load original order_file
     orig_order = pd.read_csv(path_to_order_file, header=None, delimiter='\t')
     orig_order.columns=['Number','ID','R','G','B','Size']
+    new_order = pd.DataFrame(columns=orig_order.columns)
     orig_order = orig_order.set_index('Number')
     print("++ INFO [correct_ranked_shaefer_atlas] Original Order File in memory [%s]" % str(orig_order.shape))
     
     # Load original centroids into memory
     orig_centroids = pd.read_csv(path_to_centroids_file)
+    new_centroids  = pd.DataFrame(columns = orig_centroids.columns)
     orig_centroids = orig_centroids.set_index('ROI Label')
     print("++ INFO [correct_ranked_shaefer_atlas] Original Centroids File in memory [%s]" % str(orig_centroids.shape))
     
@@ -23,7 +25,6 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
     print("++ INFO [correct_ranked_shaefer_atlas] Rank information in memory    [%s]" % str(ranking.shape))
     
     # Create new order file in memory
-    new_order = pd.DataFrame(columns=orig_order.columns)
     for i,row in ranking.iterrows():
         if i == 0:
             continue # Ignore entry for ROI ID = 0 in Rank File
@@ -39,7 +40,6 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
     print("++ INFO [correct_ranked_shaefer_atlas] New order file written to disk: %s" % path_to_new_order_file)
     
     # Create new centroids file in memory
-    new_centroids  = pd.DataFrame(columns = orig_centroids.columns)
     for i,row in ranking.iterrows():
         if i == 0:
             continue
