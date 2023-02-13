@@ -1,11 +1,16 @@
 import os.path as osp
 import pandas as pd
 
-def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_rank_file, verbose=True):
+def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_rank_file, new_atlas_name=None,new_atlas_folder=None,verbose=True):
     # Create path to output files
-    path_to_new_order_file    = osp.splitext(path_to_order_file)[0]+'.ranked.txt'
-    path_to_new_centroids_file = osp.splitext(path_to_centroids_file)[0]+'.ranked.txt'
-    
+    if new_atlas_folder is None:
+       new_atlas_folder = osp.dirname(path_to_order_file)
+    if new_atlas_name is None:
+       new_atlas_name = osp.splitext(osp.basename(path_to_order_file))[0]
+
+    path_to_new_order_file     = osp.join(new_atlas_folder,new_atlas_name+'_order.ranked.txt')
+    path_to_new_centroids_file = osp.join(new_atlas_folder,new_atlas_name+'.Centroids_RAS.ranked.txt')
+       
     # Load original order_file
     orig_order = pd.read_csv(path_to_order_file, header=None, delimiter='\t')
     orig_order.columns=['Number','ID','R','G','B','Size']
