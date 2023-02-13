@@ -7,7 +7,7 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
        new_atlas_folder = osp.dirname(path_to_order_file)
     if new_atlas_name is None:
        new_atlas_name = osp.splitext(osp.basename(path_to_order_file))[0]
-
+       new_atlas_name = new_atlas_name.replace('_order','')
     path_to_new_order_file     = osp.join(new_atlas_folder,new_atlas_name+'_order.ranked.txt')
     path_to_new_centroids_file = osp.join(new_atlas_folder,new_atlas_name+'.Centroids_RAS.ranked.txt')
        
