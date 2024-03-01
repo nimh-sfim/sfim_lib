@@ -7,7 +7,13 @@ src/sfim_lib.egg-info/PKG-INFO
 src/sfim_lib.egg-info/SOURCES.txt
 src/sfim_lib.egg-info/dependency_links.txt
 src/sfim_lib.egg-info/top_level.txt
+src/sfim_lib/atlases/__init__.py
+src/sfim_lib/atlases/raking.py
+src/sfim_lib/fc_introspection/__init__.py
+src/sfim_lib/fc_introspection/initialize_variables.py
 src/sfim_lib/io/__init__.py
 src/sfim_lib/io/afni.py
 src/sfim_lib/manifold/__init__.py
+src/sfim_lib/plotting/__init__.py
+src/sfim_lib/plotting/fc_matrices.py
 src/sfim_lib/swc/__init__.py

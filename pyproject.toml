@@ -7,6 +7,7 @@ version = "0.0.10"
 authors = [
   { name="Javier Gonzalez-Castillo", email="javiergc@mail.nih.gov" },
   { name="Daniel Handwerker", email="handwerkerd@mail.nih.gov" },
+  { name="Catherine Walsh", email="catherine.walsh@nih.gov"},
 ]
 description = "SFIM Python Library"
 readme = "README.md"
