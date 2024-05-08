@@ -9,10 +9,6 @@ import seaborn as sns
 from scipy.stats import pearsonr,spearmanr
 
 def plot_predictions(behav_obs_pred, tail="glm", figsize=(10,10), color='gray', font_scale=2, verbose=False, accuracy_metric='pearson', p_value=None, ax=None, marker_size=1, xlabel=None, ylabel=None, xlim=None, ylim=None, aspect=None):
-    if ax is None:
-        create_new_fig = True
-    else:
-        create_new_fig = False
     """
     This function generates a scatter plot of observed behavior vs. predicted behavior. The plot also includes
     a linear fit with 9% confidence intervals, as computed by seaborn.regplot.
@@ -31,7 +27,25 @@ def plot_predictions(behav_obs_pred, tail="glm", figsize=(10,10), color='gray', 
     font_scale: size of labels and annotations. [default=2]
     
     verbose: if true, it will print the p and r values for the linear fit.
+
+    accuracy_metric: metric used to quantify prediction accuracy. Possible values ('pearson','spearman'). [defaul='pearson']
+
+    p_value: use it to manually provide the p-value for the accuracy metric. (Not recommended).
+
+    ax: matplotlib figure axes
+
+    marker_size: size of dots in the scatter plot [dafault=1]
+
+    xlabel: label for the X axis [default=None]
     
+    ylabel: label for the Y axis [default=None]
+    
+    xlim: limits for the X axis [default=None]
+
+    ylim: limits for the Y axis [default=None]
+
+    aspect: aspect to be passed to matplotlib [dafault=None]
+
     OUTPUTS
     =======
     r: correlation value between predictive and observed values.
@@ -40,6 +54,10 @@ def plot_predictions(behav_obs_pred, tail="glm", figsize=(10,10), color='gray', 
     
     f: figure
     """
+    if ax is None:
+        create_new_fig = True
+    else:
+        create_new_fig = False
  
     # Extract observed (x) and predicted behavior for the model of interest (tail)
     x                         = behav_obs_pred.filter(regex=("obs")).astype(float)
