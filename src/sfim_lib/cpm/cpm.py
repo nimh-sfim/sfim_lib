@@ -80,7 +80,7 @@ def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43,
         print('++ INFO [mk_kfold_test_indices_subject_aware]: Extracting subject list from scan_list.')
         aux_sub_list = [sbj for sbj,_ in scan_list]
         aux_used     = set()
-        sub_list     = [x for x in aux_sbj_list if x not in aux_used and (aux_used.add(x) or True)]
+        sub_list     = [x for x in aux_sub_list if x not in aux_used and (aux_used.add(x) or True)]
         # LEADS TO RANDOM RESULTS BECUASE OF SET
         #sub_list = []
         #for (sbj,scan) in  scan_list:
