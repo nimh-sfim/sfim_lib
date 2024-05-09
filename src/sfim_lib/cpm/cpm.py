@@ -524,7 +524,7 @@ def residualize(y,confounds):
     lm: model used for the removal of confounds. To be used on the test set later on.
     """
     for confound in confounds.columns:
-        print("++ INFO [residualize]: R_before = {:.3f}".format(pearsonr(y, confounds[confound])[0]), end=', ')
+        print("R_before = {:.3f}".format(pearsonr(y, confounds[confound])[0]), end=', ')
 
     lm = LinearRegression().fit(confounds, y)
     y_resid = y - lm.predict(confounds)
