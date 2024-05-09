@@ -75,7 +75,7 @@ def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43,
     =======
     indices: np.array with one value per scan indicating k-fold in which the scan
     """
-    if sbj_list is None:
+    if sub_list is None:
         print('++ INFO [mk_kfold_test_indices_subject_aware]: Extracting subject list from scan_list.')
         #Get list of subjects from scan list:
         sub_list = []
