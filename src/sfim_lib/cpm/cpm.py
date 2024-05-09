@@ -115,12 +115,12 @@ def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43,
         scan_df.loc[sbj,'indices']=idx
 
     #Create df of just the folds
-    scan_indices = scan_df['indices']
+    scan_indices = scan_df['indices'].astype(int).values
     if verb:
        print('++ INFO [mk_kfold_test_indices]: Final number of scans in test fold for each fold')
        print(pd.DataFrame(scan_indices, columns=['Fold']).value_counts())
 
-    return np.array(scan_indices)
+    return scan_indices
 
 def _mk_kfold_indices_subject_aware_incorrect(scan_list, random_seed=43, k = 10):
     """
