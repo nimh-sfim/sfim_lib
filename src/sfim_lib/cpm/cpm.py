@@ -52,7 +52,7 @@ def mk_kfold_test_indices(scan_list, random_seed=43, k = 10, verb=False):
        print(pd.DataFrame(indices, columns=['Fold']).value_counts())
     return np.array(indices)
 
-def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43, k=10):
+def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43, k=10,verb=False):
     """
     Split data into k-folds based on subject ID (as opposed to scan_id). This is done to ensure data from the same
     subject does not end on the test and training set for any fold. This is only useful for cases when there are
@@ -116,6 +116,9 @@ def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43,
 
     #Create df of just the folds
     scan_indices = scan_df['indices']
+    if verb:
+       print('++ INFO [mk_kfold_test_indices]: Final number of scans in test fold for each fold')
+       print(pd.DataFrame(scan_indices, columns=['Fold']).value_counts())
 
     return np.array(scan_indices)
 
