@@ -52,7 +52,74 @@ def mk_kfold_test_indices(scan_list, random_seed=43, k = 10, verb=False):
        print(pd.DataFrame(indices, columns=['Fold']).value_counts())
     return np.array(indices)
 
-def mk_kfold_indices_subject_aware_incorrect(scan_list, random_seed=43, k = 10):
+def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43, k=10):
+    """
+    Split data into k-folds based on subject ID (as opposed to scan_id). This is done to ensure data from the same
+    subject does not end on the test and training set for any fold. This is only useful for cases when there are
+    multiple scans per subject.
+    
+    This function will return a numpy array, where each entry in the array tells us in which of the k-folds 
+    a given scan will belong to the test set.
+    
+    INPUTS
+    ======
+    scan_list: list of scan identifiers. Each entry expected to be a tuple (sbj_id, run_id)
+
+    sub_list: list of unique subjects. If not provided, it will be inferred from scan_list.
+
+    k: number of folds
+ 
+    random_seed: random seed. Provide a number if you want to set it [default=43]
+  
+    OUTPUTS
+    =======
+    indices: np.array with one value per scan indicating k-fold in which the scan
+    """
+    if sbj_list is None:
+        print('++ INFO [mk_kfold_test_indices_subject_aware]: Extracting subject list from scan_list.')
+        #Get list of subjects from scan list:
+        sub_list = []
+        for (sbj,scan) in  scan_list:
+            sub_list.append(sbj)
+        sub_list = list(set(sub_list))
+
+    #Number of Subjects:
+    n_subs = len(sub_list)
+    print('++ INFO [mk_kfold_test_indices_subject_aware]: Number of subjects = %d' % n_subs)
+    #Floor integer for n_subs_per_fold
+    n_subs_per_fold = n_subs//k
+    print('++ INFO [mk_kfold_test_indices_subject_aware]: Minimum Number of subjects per test fold = %d' % n_subs_per_fold)
+
+    #Figure out how many subs are left over
+    remainder = n_subs % k
+    remainder_inds = list(range(remainder))
+
+    #Generate repmat list of indices
+    indices = [[fold_no]*n_subs_per_fold for fold_no in range(k)]
+    indices = [item for sublist in indices for item in sublist]
+
+    #Add indices for remainder subs
+    [indices.append(ind) for ind in remainder_inds]
+
+    assert len(indices)==n_subs, "Length of indices list does not equal number of subjects, something went wrong"
+
+    #Shuffles in place, Random(i) sets the seed for each iteration
+    random.Random(random_seed).shuffle(indices)
+
+    #Convert scan_list to df so that it can be indexed
+    scan_df = scan_list.to_frame(index=False)
+    scan_df = scan_df.set_index('Subject')
+
+    #Add the respective fold to each scan
+    for sbj,idx in zip(sub_list,indices):
+        scan_df.loc[sbj,'indices']=idx
+
+    #Create df of just the folds
+    scan_indices = scan_df['indices']
+
+    return np.array(scan_indices)
+
+def _mk_kfold_indices_subject_aware_incorrect(scan_list, random_seed=43, k = 10):
     """
     Split scans into folds taking into account subject identity. This function is WRONG becuase it does not
     take into account the way in which Emily's original code encodes k-fold membership. 
