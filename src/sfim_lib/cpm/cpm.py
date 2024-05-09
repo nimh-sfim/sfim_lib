@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import GroupShuffleSplit
 from sklearn.linear_model import Ridge
 from sklearn.linear_model import LinearRegression
-import random
+from sklearn.utils import shuffle
 
 # ==========================================
 # === Cross-validation related functions ===
@@ -46,7 +46,7 @@ def mk_kfold_test_indices(scan_list, random_seed=43, k = 10, verb=False):
 
     assert len(indices)==n_scans, "Length of indices list does not equal number of sscans, something went wrong"
 
-    random.Random(random_seed).shuffle(indices) # shuffles in place
+    indices = shuffle(indices, random_seed=random_seed)
     if verb:
        print('++ INFO [mk_kfold_test_indices]: Final number of scans in test fold for each fold')
        print(pd.DataFrame(indices, columns=['Fold']).value_counts())
@@ -104,7 +104,7 @@ def mk_kfold_test_indices_subject_aware(scan_list, sub_list=None,random_seed=43,
     assert len(indices)==n_subs, "Length of indices list does not equal number of subjects, something went wrong"
 
     #Shuffles in place, Random(i) sets the seed for each iteration
-    random.Random(random_seed).shuffle(indices)
+    indices = shuffle(indices,random_seed=random_seed)
 
     #Convert scan_list to df so that it can be indexed
     scan_df = scan_list.to_frame(index=False)
