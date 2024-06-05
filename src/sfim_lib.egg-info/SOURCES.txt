@@ -11,6 +11,7 @@ src/sfim_lib/atlases/__init__.py
 src/sfim_lib/atlases/raking.py
 src/sfim_lib/cpm/__init__.py
 src/sfim_lib/cpm/cpm.py
+src/sfim_lib/cpm/cpm_warper.py
 src/sfim_lib/cpm/plotting.py
 src/sfim_lib/fc_introspection/__init__.py
 src/sfim_lib/fc_introspection/initialize_variables.py
