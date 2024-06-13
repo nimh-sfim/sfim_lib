@@ -33,12 +33,14 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
     for i,row in ranking.iterrows():
         if i == 0:
             continue # Ignore entry for ROI ID = 0 in Rank File
-        new_order = new_order.append({'Number':row['New'],
+        
+        new_entries_dict = {'Number':row['New'],
                       'ID':  orig_order.loc[row['Old']]['ID'],
                       'R':   orig_order.loc[row['Old']]['R'],
                       'G':   orig_order.loc[row['Old']]['G'],
                       'B':   orig_order.loc[row['Old']]['B'],
-                      'Size':orig_order.loc[row['Old']]['Size']},ignore_index=True)
+                      'Size':orig_order.loc[row['Old']]['Size']}
+        new_order = pd.concat([new_order, pd.DataFrame.from_records([new_entries_dict])],ignore_index=True)
     
     # Write new order file
     new_order.to_csv(path_to_new_order_file,header=False, index=False, sep='\t')
@@ -48,11 +50,12 @@ def correct_ranked_atlas(path_to_order_file, path_to_centroids_file, path_to_ran
     for i,row in ranking.iterrows():
         if i == 0:
             continue
-        new_centroids = new_centroids.append({'ROI Label':row['New'],
+        new_entries_dict = {'ROI Label':row['New'],
                                           'ROI Name':orig_centroids.loc[row['Old']]['ROI Name'],
                                           'R'       :orig_centroids.loc[row['Old']]['R'],
                                           'A'       :orig_centroids.loc[row['Old']]['A'],
-                                          'S'       :orig_centroids.loc[row['Old']]['S']}, ignore_index=True)
+                                          'S'       :orig_centroids.loc[row['Old']]['S']}
+        new_centroids = pd.concat([new_centroids, pd.DataFrame.from_records([new_entries_dict])], ignore_index=True)
     # Write new centroids to disk
     new_centroids.to_csv(path_to_new_centroids_file, index=False)
     print("++ INFO [correct_ranked_shaefer_atlas] New centroids file written to disk: %s" % path_to_new_centroids_file)
