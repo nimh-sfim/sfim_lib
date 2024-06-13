@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sfim_lib
-Version: 0.0.12
+Version: 0.0.13
 Summary: SFIM Python Library
 Author-email: Javier Gonzalez-Castillo <javiergc@mail.nih.gov>, Daniel Handwerker <handwerkerd@mail.nih.gov>, Catherine Walsh <catherine.walsh@nih.gov>
 Project-URL: Homepage, https://github.com/nimh-sfim/sfim_lib
