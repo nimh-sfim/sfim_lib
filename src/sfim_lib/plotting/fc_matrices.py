@@ -28,7 +28,7 @@ hm_color_map = {'LH':'grey','RH':'darkgrey'}
 
 # This function is used to extract the location of labels and segments when showing the data
 # organized by hemispheric membership.
-def get_net_divisions_by_Hemisphere(roi_info_input, verbose=False):
+def get_net_divisions_by_Hemisphere(roi_info, verbose=False):
     """
     INFO: This function takes as input ROI information and returns the label and location of network
     ===== and hemisphere tickmarks. It also returns the start and end points of colored segments to 
@@ -36,26 +36,12 @@ def get_net_divisions_by_Hemisphere(roi_info_input, verbose=False):
           
     INPUTS:
     =======
-    roi_info_input: this can be either a string, a pandas dataframe or a pandas multiindex.
-       * If string, then assume it is the path to a pandas dataframe with ROI info.
-       * If pd.MultiIndex, assume it contains at least three levels labeled Hemisphere, Network and ROI_ID
-       * If pd.DataFrame, assume it contains at least three columns labeled Hemisphere, Network and ROI_ID
+    roi_info: this must be a pandas multiindex that contains at least three levels labeled Hemisphere, Network and ROI_ID
     """
   
     # Load ROI Info File
-    if isinstance(roi_info_input,str):
-        if osp.exists(roi_info_input):
-            if verbose:
-                print('++ INFO [get_net_divisions]: Loading ROI information from disk [%s]' % roi_info_input)
-            roi_info = pd.read_csv(roi_info_input)
-        else:
-            print('++ ERROR [get_net_divisions]: Provided path to ROI information not found [%s]' % roi_info_input)
-            return None
-    if isinstance(roi_info_input,pd.MultiIndex):
-        roi_info = pd.DataFrame()
-        roi_info['Hemisphere'] = list(roi_info_input.get_level_values('Hemisphere'))
-        roi_info['Network']    = list(roi_info_input.get_level_values('Network'))
-        roi_info['ROI_ID']     = list(roi_info_input.get_level_values('ROI_ID'))
+    assert isinstance(roi_info,pd.MultiIndex), "++ ERROR [get_net_divisions_by_Network]: roi_info is not a pandas multiindex"
+    roi_info      = roi_info.to_frame()
 
     Nrois         = roi_info.shape[0]                                # Total number of ROIs    
     Nrois_LH      = roi_info[roi_info['Hemisphere']=='LH'].shape[0]  # Number of ROIs in LH
@@ -85,7 +71,7 @@ def get_net_divisions_by_Hemisphere(roi_info_input, verbose=False):
 
 # This function is used to extract the location of labels and segments when showing the data
 # organized by network membership.
-def get_net_divisions_by_Network(roi_info_input, verbose=False):
+def get_net_divisions_by_Network(roi_info, verbose=False):
     """
     INFO: This function takes as input ROI information and returns the label and location of network
     ===== and tickmarks. It also returns the start and end points of colored segments to 
@@ -93,65 +79,60 @@ def get_net_divisions_by_Network(roi_info_input, verbose=False):
           
     INPUTS:
     =======
-    roi_info_input: this can be either a string, a pandas dataframe or a pandas multiindex.
-       * If string, then assume it is the path to a pandas dataframe with ROI info.
-       * If pd.MultiIndex, assume it contains at least three levels labeled Hemisphere, Network and ROI_ID
-       * If pd.DataFrame, assume it contains at least three columns labeled Hemisphere, Network and ROI_ID
+    roi_info: this has to be a pandas multiindex that contains at least three levels labeled Hemisphere, Network and ROI_ID
     """
     # Load ROI Info File
-    if isinstance(roi_info_input,str):
-        if osp.exists(roi_info_input):
-            if verbose:
-                print('++ INFO [get_net_divisions]: Loading ROI information from disk [%s]' % roi_info_input)
-            roi_info = pd.read_csv(roi_info_input)
-        else:
-            print('++ ERROR [get_net_divisions]: Provided path to ROI information not found [%s]' % roi_info_input)
-            return None
-    if isinstance(roi_info_input,pd.MultiIndex):
-        roi_info = pd.DataFrame()
-        roi_info['Hemisphere'] = list(roi_info_input.get_level_values('Hemisphere'))
-        roi_info['Network']    = list(roi_info_input.get_level_values('Network'))
-        roi_info['ROI_ID']     = np.arange(roi_info.shape[0])+1
-        
+    assert isinstance(roi_info,pd.MultiIndex), "++ ERROR [get_net_divisions_by_Network]: roi_info is not a pandas multiindex"
+    roi_info      = roi_info.to_frame()
     Nrois         = roi_info.shape[0]                                # Total number of ROIs
-    Nnetworks     = len(roi_info['Network'].unique())                # Number of unique networks (independent of hemisphere)
-    net_names     = list(roi_info['Network'].unique())               # Network names (no hm info attached)
+    Nnetworks     = roi_info.index.get_level_values('Network').unique().shape[0]               # Number of unique networks (independent of hemisphere)
+    net_names     = list(roi_info.index.get_level_values('Network').unique())               # Network names (no hm info attached)
     if verbose:
         print('++ INFO: Network Names %s' % str(net_names))
         
     # Get Positions of start and end of ROIs that belong to the different networks. We will use this info to set labels
     # on matrix axes
-    net_edges = [0]
+    rois_per_nw = []
     for network in net_names:
-        net_edges.append(roi_info[(roi_info['Network']==network)].iloc[-1]['ROI_ID'])
+        rois_per_nw.append(roi_info[(roi_info['Network']==network)].shape[0])
+    rois_per_nw = np.array(rois_per_nw)
+    net_edges = [0]+ list(rois_per_nw.cumsum())
+    
     net_meds = [int(i) for i in net_edges[0:-1] + np.diff(net_edges)/2]
     if verbose:
         print('++ INFO: Network End      IDs: %s ' % str(net_edges))
         print('++ INFO: Network Midpoint IDs: %s ' % str(net_meds))
     return Nrois, Nnetworks, net_names, net_edges, net_meds
 
-def hvplot_fc(data, roi_info_input = None, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False, bgcolor='#ffffff', ticks_font_size=12,
+def hvplot_fc(data, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False, bgcolor='#ffffff', ticks_font_size=12,
               hm_cmap=hm_color_map, net_cmap=nw_color_map, cbar_title='',
               clim=(-.8,.8), cbar_title_fontsize=16, 
               add_labels=True,add_color_segments=True,
               verbose=False, cmap=['blue','white','red'], nw_sep_lw=0.5, nw_sep_ld='dashed',
-              major_label_overrides={-0.5:'F2 > F1',0:'',0.5:'F1 > F2'}, colorbar_position='top'):
+              major_label_overrides={-0.5:'F2 > F1',0:'',0.5:'F1 > F2'}, colorbar_position='top', hm_order=None, nw_order=None):
     """
     INFO: This function will generate an annotated and interactive view of a given FC matrix.
     
     """
     # If ROI information is not provided explicitly, it is assumed that it is included in the index and columns of the input data structure
     # -------------------------------------------------------------------------------------------------------------------------------------
-    if roi_info_input is None:
-        roi_info_input = data.index
+    roi_info = data.index
     
     # Get information needed for correct labeling of the matrix
     # ---------------------------------------------------------
     assert by in ['Hemisphere','Network']
     if by == 'Hemisphere':
-        Nrois, Nrois_LH, Nrois_RH, Nnet_segments, Nnetworks, net_names, hm_net_names, hm_net_edges, hm_net_meds = get_net_divisions_by_Hemisphere(roi_info_input)
+        if hm_order is None:
+            hm_order = list(data.index.get_level_values(level='Hemisphere').unique())
+        data = data.loc[:,:,hm_order,:].T.loc[:,:,hm_order,:].T
+        roi_info = data.index
+        Nrois, Nrois_LH, Nrois_RH, Nnet_segments, Nnetworks, net_names, hm_net_names, hm_net_edges, hm_net_meds = get_net_divisions_by_Hemisphere(roi_info)
     if by == 'Network':
-        Nrois, Nnetworks, net_names, net_edges, net_meds = get_net_divisions_by_Network(roi_info_input)
+        if nw_order is None:
+            nw_order = list(data.index.get_level_values(level='Network').unique())
+        data = data.loc[:,:,:,nw_order].T.loc[:,:,:,nw_order].T
+        roi_info = data.index
+        Nrois, Nnetworks, net_names, net_edges, net_meds = get_net_divisions_by_Network(roi_info)
     
     # Remove axes from data
     # ---------------------

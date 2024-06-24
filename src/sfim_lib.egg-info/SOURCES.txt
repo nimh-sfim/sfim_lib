@@ -8,7 +8,6 @@ src/sfim_lib.egg-info/SOURCES.txt
 src/sfim_lib.egg-info/dependency_links.txt
 src/sfim_lib.egg-info/top_level.txt
 src/sfim_lib/atlases/__init__.py
-src/sfim_lib/atlases/plotting.py
 src/sfim_lib/atlases/raking.py
 src/sfim_lib/cpm/__init__.py
 src/sfim_lib/cpm/cpm.py
