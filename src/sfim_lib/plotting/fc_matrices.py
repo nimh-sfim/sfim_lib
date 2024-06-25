@@ -120,7 +120,7 @@ def hvplot_fc(data, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False
     
     # Get information needed for correct labeling of the matrix
     # ---------------------------------------------------------
-    assert by in ['Hemisphere','Network']
+    assert by in ['Hemisphere','Network'],"++ ERROR[hvplot_fc]: by parameter has value I cannot understand"
     if by == 'Hemisphere':
         if hm_order is None:
             hm_order = list(data.index.get_level_values(level='Hemisphere').unique())
