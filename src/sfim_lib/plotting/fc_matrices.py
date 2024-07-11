@@ -19,7 +19,24 @@ nw_color_map = {'LH-Vis':'#9e53a9',      'RH-Vis':'#9e53a9','Vis':'#9e53a9',
                    'LH-Cont':'#eeba42','RH-Cont':'#eeba42','Cont':'#eeba42',
                    'LH-Default':'#db707e','RH-Default':'#db707e','Default':'#db707e',
                    'LH-Subcortical':'#bcbd22',      'RH-Subcortical':'#bcbd22','Subcortical':'#bcbd22',
-                   'LH-Limbic':'#f6fdcb',      'RH-Limbic':'#f6fdcb','Limbic':'#f6fdcb'}
+                   'LH-Limbic':'#f6fdcb',      'RH-Limbic':'#f6fdcb','Limbic':'#f6fdcb',
+                   'LH-VisCent':'#781283','RH-VisCent':'#781283','VisCent':'#781283', 
+                   'LH-VisPeri':'#ff0101','RH-VisPeri':'#ff0101','VisPeri':'#ff0101',
+                   'LH-SomMotA':'#4681b4','RH-SomMotA':'#4681b4','SomMotA':'#4681b4', 
+                   'LH-SomMotB':'#2bcc9e','RH-SomMotB':'#2bcc9e','SomMotB':'#2bcc9e',
+                   'LH-DorsAttnA':'#4a9b3d','RH-DorsAttnA':'#4a9b3d','DorsAttnA':'#4a9b3d',
+                   'LH-DorsAttnB':'#00760c','RH-DorsAttnB':'#00760c','DorsAttnB':'#00760c', 
+                   'LH-SalVentAttnA':'#c43afb','RH-SalVentAttnA':'#c43afb','SalVentAttnA':'#c43afb',
+                   'LH-SalVentAttnB':'#ff99d6','RH-SalVentAttnB':'#ff99d6','SalVentAttnB':'#ff99d6',
+                   'LH-LimbicB':'#7a8736','RH-LimbicB':'#7a8736','LimbicB':'#7a8736',
+                   'LH-LimbicA':'#dcf8a2','RH-LimbicA':'#dcf8a2','LimbicA':'#dcf8a2',
+                   'LH-ContA':'#e69423','RH-ContA':'#e69423','ContA':'#e69423', 
+                   'LH-ContB':'#87324c','RH-ContB':'#87324c','ContB':'#87324c',
+                   'LH-ContC':'#778cb1','RH-ContC':'#778cb1','ContC':'#778cb1', 
+                   'LH-DefaultA':'#ffff01','RH-DefaultA':'#ffff01','DefaultA':'#ffff01', 
+                   'LH-DefaultB':'#cd3e4d','RH-DefaultB':'#cd3e4d','DefaultB':'#cd3e4d', 
+                   'LH-DefaultC':'#000083','RH-DefaultC':'#000083','DefaultC':'#000083',
+                   'LH-TempPar':'#0c30fe','RH-TempPar':'#0c30fe','TempPar':'#0c30fe'}
 hm_color_map = {'LH':'grey','RH':'darkgrey'}
 
 # ========================================================
