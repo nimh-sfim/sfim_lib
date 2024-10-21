@@ -129,7 +129,7 @@ def hvplot_fc(data, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False
               major_label_overrides={-0.5:'F2 > F1',0:'',0.5:'F1 > F2'}, colorbar_position='top', hm_order=None, nw_order=None):
     """
     INFO: This function will generate an annotated and interactive view of a given FC matrix.
-    
+          As of now, this function expects the index and columsn to have levels in a particular order: ROI_Name, ROI_ID, Hemisphere, Network
     """
     # If ROI information is not provided explicitly, it is assumed that it is included in the index and columns of the input data structure
     # -------------------------------------------------------------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ def hvplot_fc(data, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False
         color_segments_x = hv.Segments((tuple(np.array(net_edges[:-1])-0.5),
                                         tuple(-2.5*np.ones(Nnetworks)),
                                         tuple(np.array(net_edges[1:])-0.5),
-                                        tuple(-2.5*np.ones(Nnetworks)), net_names),vdims='Networks').opts(cmap=nw_color_map, color=dim('Networks'), line_width=10, show_legend=False, xrotation=x_rotation)
+                                        tuple(-2.5*np.ones(Nnetworks)), net_names),vdims='Networks').opts(cmap=net_cmap, color=dim('Networks'), line_width=10, show_legend=False, xrotation=x_rotation)
         y_min_lim = -4
     else:
         color_segments_x = None
@@ -210,11 +210,11 @@ def hvplot_fc(data, by='Hemisphere', alpha=1, apply_triu=False, apply_tril=False
     # -----------------------------------------
     if add_color_segments & (by=='Hemisphere'):
         color_segments_y = hv.Segments((tuple(-2.5*np.ones(Nnet_segments)),tuple(np.array(hm_net_edges[:-1])-0.5),
-                              tuple(-2.5*np.ones(Nnet_segments)),tuple(np.array(hm_net_edges[1:])-0.5), hm_net_names),vdims='Networks').opts(cmap=nw_color_map, color=dim('Networks'), line_width=10,show_legend=False)
+                              tuple(-2.5*np.ones(Nnet_segments)),tuple(np.array(hm_net_edges[1:])-0.5), hm_net_names),vdims='Networks').opts(cmap=net_cmap, color=dim('Networks'), line_width=10,show_legend=False)
         x_min_lim = -4
     elif add_color_segments & (by=='Network'):
         color_segments_y = hv.Segments((tuple(-2.5*np.ones(Nnetworks)),tuple(np.array(net_edges[:-1])-0.5),
-                              tuple(-2.5*np.ones(Nnetworks)),tuple(np.array(net_edges[1:])-0.5), net_names),vdims='Networks').opts(cmap=nw_color_map, color=dim('Networks'), line_width=10,show_legend=False)
+                              tuple(-2.5*np.ones(Nnetworks)),tuple(np.array(net_edges[1:])-0.5), net_names),vdims='Networks').opts(cmap=net_cmap, color=dim('Networks'), line_width=10,show_legend=False)
         x_min_lim = -4
     else:
         color_segments_y = None
